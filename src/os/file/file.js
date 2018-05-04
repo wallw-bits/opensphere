@@ -7,6 +7,7 @@ goog.require('goog.net.jsloader');
 goog.require('os.IPersistable');
 goog.require('os.arraybuf');
 goog.require('os.defines');
+goog.require('os.file.mime.zip');
 
 
 
@@ -53,6 +54,12 @@ os.file.File = function() {
    * @private
    */
   this.url_ = null;
+
+  /**
+   * @type {?string}
+   * @private
+   */
+  this.encoding_ = null;
 };
 
 
@@ -79,6 +86,22 @@ os.file.FileScheme = {
  * @type {boolean}
  */
 os.file.FILE_URL_ENABLED = false;
+
+
+/**
+ * @return {?string} The encoding used
+ */
+os.file.File.prototype.getEncoding = function() {
+  return this.encoding_;
+};
+
+
+/**
+ * @param {?string} value The encoding
+ */
+os.file.File.prototype.setEncoding = function(value) {
+  this.encoding_ = value;
+};
 
 
 /**
@@ -199,6 +222,7 @@ os.file.File.prototype.persist = function(opt_to) {
   to['fileName'] = this.fileName_;
   to['type'] = this.type_;
   to['url'] = this.url_;
+  to['encoding'] = this.encoding_;
 
   return to;
 };
@@ -213,6 +237,7 @@ os.file.File.prototype.restore = function(config) {
   this.fileName_ = config['fileName'] || null;
   this.type_ = config['type'] || null;
   this.url_ = config['url'] || null;
+  this.encoding_ = config['encoding'] || null;
 };
 
 
@@ -245,26 +270,14 @@ goog.define('os.file.ZIP_PATH', 'vendor/zip-js');
 })();
 
 
-/**
- * @type {number}
- * @const
- */
-os.file.ZIP_MAGIC_BYTES_BIG_ENDIAN = 0x504B0304;
-
 
 /**
  * Tests if an ArrayBuffer holds ZIP content by looking for the magic number.
  * @param {ArrayBuffer} content
  * @return {boolean}
+ * @deprecated Please use os.file.mime.zip.isZip() instead.
  */
-os.file.isZipFile = function(content) {
-  if (!content) {
-    return false;
-  }
-
-  var dv = new DataView(content.slice(0, 4));
-  return os.file.ZIP_MAGIC_BYTES_BIG_ENDIAN == dv.getUint32(0);
-};
+os.file.isZipFile = os.file.mime.zip.isZip;
 
 
 /**

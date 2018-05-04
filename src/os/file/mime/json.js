@@ -1,0 +1,30 @@
+goog.provide('os.file.mime.json');
+
+goog.require('os.file.mime.text');
+
+
+/**
+ * @param {ArrayBuffer} buffer
+ * @param {os.file.File=} opt_file
+ * @param {*=} opt_context
+ * @return {*|undefined} This returns the parsed JSON (so far) as the context. Note that single falsy values such as `null`, `0`, `""`, and `false` will not be detected as JSON
+ */
+os.file.mime.json.isJSON = function(buffer, opt_file, opt_context) {
+  var retVal;
+
+  if (opt_context && goog.isString(opt_context)) {
+    var parser = oboe();
+
+    var error = false;
+    parser.fail(function() {
+      error = true;
+    });
+
+    parser.emit('data', opt_context);
+    retVal = !error ? parser.root() : retVal;
+  }
+
+  return retVal;
+};
+
+os.file.mime.register('application/json', os.file.mime.json.isJSON, 0, 'text/plain');
