@@ -17,7 +17,7 @@ os.file.mime.mock.testFiles = function(files, testFunc) {
 
     waitsFor(function() {
       return !!buffer;
-    }, 'file to load');
+    }, file + ' to load');
 
     runs(function() {
       // take first chunk

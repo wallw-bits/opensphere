@@ -19,30 +19,27 @@ describe('os.file.mime.json', function() {
   });
 
   it('should detect files that are json files', function() {
-    var index = -1;
-    var expected = [{
-      'string': 'string',
-      'number': 123,
-      'boolean': true,
-      'null': null
-    }, {
-      'field': [1, 2]
-    }, {
-      'field': 'There once was a'
-    }, {
-      'field': undefined
-    }, {
-      'field': undefined
-    }];
+    var expected = {
+      '/base/test/resources/json/partial_object.json': {
+        'string': 'string',
+        'number': 123,
+        'boolean': true,
+        'null': null
+      },
+      '/base/test/resources/json/partial_array.json': {
+        'field': [1, 2]
+      },
+      '/base/test/resources/json/partial_string.json': {
+        // 'field': 'There once was a'
+        'field': undefined
+      },
+      '/base/test/resources/json/partial_number.json': {'field': 1},
+      '/base/test/resources/json/partial_null.json': {'field': undefined}
+    };
 
-    os.file.mime.mock.testFiles([
-      '/base/test/resources/json/partial_object.json',
-      '/base/test/resources/json/partial_array.json',
-      '/base/test/resources/json/partial_string.json',
-      '/base/test/resources/json/partial_number.json',
-      '/base/test/resources/json/partial_null.json'],
+    os.file.mime.mock.testFiles(Object.keys(expected),
         function(buffer, filename) {
-          index++;
+          var eVal = expected[filename];
           var context = os.file.mime.text.getText(buffer);
           var result = os.file.mime.json.isJSON(buffer, undefined, context);
 
@@ -51,8 +48,8 @@ describe('os.file.mime.json', function() {
           }
 
           expect(result).toBeTruthy();
-          for (var key in expected[index]) {
-            expect(result[key]).toEqual(expected[index][key]);
+          for (var key in eVal) {
+            expect(result[key]).toEqual(eVal[key]);
           }
         });
   });

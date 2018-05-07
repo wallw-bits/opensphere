@@ -55,7 +55,7 @@ oboe.Parser.prototype.addListener = function(typeAndPattern, handlerOrPattern, o
 oboe.Parser.prototype.emit = function(type, thing) {};
 
 /**
- * @param {function(Error=)} errback
+ * @param {function({thrown: Error})} errback
  */
 oboe.Parser.prototype.fail = function(errback) {};
 

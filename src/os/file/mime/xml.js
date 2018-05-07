@@ -1,5 +1,6 @@
 goog.provide('os.file.mime.xml');
 
+goog.require('os.file.mime');
 goog.require('os.file.mime.text');
 
 

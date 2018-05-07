@@ -15,24 +15,24 @@ describe('os.file.mime.xml', function() {
   });
 
   it('should detect files that are xml files', function() {
-    var index = -1;
-    var expected = [{
-      rootTag: 'one',
-      rootNS: 'http://example.com/thing'
-    }, {
-      rootTag: 'root',
-      rootNS: ''
-    }, {
-      rootTag: 'kml',
-      rootNS: 'http://www.opengis.net/kml/2.2'
-    }];
+    var expected = {
+      '/base/test/resources/xml/namespaced-root-partial.xml': {
+        rootTag: 'one',
+        rootNS: 'http://example.com/thing'
+      },
+      '/base/test/resources/xml/comment-with-embedded-xml.xml': {
+        rootTag: 'root',
+        rootNS: ''
+      },
+      '/base/test/plugin/file/kml/kml_test.xml': {
+        rootTag: 'kml',
+        rootNS: 'http://www.opengis.net/kml/2.2'
+      }
+    };
 
-    os.file.mime.mock.testFiles([
-      '/base/test/resources/xml/namespaced-root-partial.xml',
-      '/base/test/resources/xml/comment-with-embedded-xml.xml',
-      '/base/test/plugin/file/kml/kml_test.xml'],
+    os.file.mime.mock.testFiles(Object.keys(expected),
         function(buffer, filename) {
-          index++;
+          var eVal = expected[filename];
           var context = os.file.mime.text.getText(buffer);
           var result = os.file.mime.xml.isXML(buffer, undefined, context);
 
@@ -41,8 +41,8 @@ describe('os.file.mime.xml', function() {
           }
 
           expect(result).toBeTruthy();
-          for (var key in expected[index]) {
-            expect(result[key]).toBe(expected[index][key]);
+          for (var key in eVal) {
+            expect(result[key]).toBe(eVal[key]);
           }
         });
   });
