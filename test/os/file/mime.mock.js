@@ -28,6 +28,46 @@ os.file.mime.mock.testFiles = function(files, testFunc) {
 };
 
 
+os.file.mime.mock.testNo = function(type) {
+  return function(buffer) {
+    var result = Number.POSITIVE_INFINITY;
+    runs(function() {
+      os.file.mime.detect(buffer).then(function(val) {
+        result = val;
+      });
+    });
+
+    waitsFor(function() {
+      return result !== Number.POSITIVE_INFINITY;
+    }, 'promise to conclude');
+
+    runs(function() {
+      expect(result).not.toBe(type);
+    });
+  };
+};
+
+
+os.file.mime.mock.testYes = function(type) {
+  return function(buffer, filename) {
+    var result = null;
+    runs(function() {
+      os.file.mime.detect(buffer).then(function(val) {
+        result = val;
+      });
+    });
+
+    waitsFor(function() {
+      return !!result;
+    }, 'promise to conclude');
+
+    runs(function() {
+      expect(result).toBe(type);
+    });
+  };
+};
+
+
 os.file.mime.mock.getTypeChain = function(type, opt_node, opt_chain) {
   opt_node = opt_node || os.file.mime.root_;
   opt_chain = opt_chain || [];

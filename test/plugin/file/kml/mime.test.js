@@ -7,23 +7,13 @@ describe('plugin.file.kml.mime', function() {
     os.file.mime.mock.testFiles([
       '/base/test/resources/xml/namespaced-root-partial.xml',
       '/base/test/resources/xml/comment-with-embedded-xml.xml'],
-        function(buffer) {
-          var result = os.file.mime.detect(buffer);
-          expect(result).not.toBe('application/vnd.google-earth.kml+xml');
-        });
+        os.file.mime.mock.testNo(plugin.file.kml.mime.TYPE));
   });
 
   it('should detect files that are kml files', function() {
     os.file.mime.mock.testFiles([
       '/base/test/plugin/file/kml/kml_test.xml'],
-        function(buffer, filename) {
-          var result = os.file.mime.detect(buffer);
-          if (!result) {
-            console.log(filename, 'failed!');
-          }
-
-          expect(result).toBe('application/vnd.google-earth.kml+xml');
-        });
+        os.file.mime.mock.testYes(plugin.file.kml.mime.TYPE));
   });
 
   it('should register itself with mime detection', function() {

@@ -1,5 +1,6 @@
 goog.provide('os.file.mime.text');
 
+goog.require('goog.Promise');
 goog.require('goog.array');
 goog.require('goog.log');
 goog.require('goog.log.Logger');
@@ -97,7 +98,18 @@ os.file.mime.text.getText = function(buffer, opt_file) {
     return s;
   }
 };
-os.file.mime.register(os.file.mime.text.TYPE, os.file.mime.text.getText, 1000);
+
+
+/**
+ * @param {ArrayBuffer} buffer
+ * @param {os.file.File=} opt_file
+ * @return {!goog.Promise<string|undefined>}
+ */
+os.file.mime.text.detectText = function(buffer, opt_file) {
+  return goog.Promise.resolve(os.file.mime.text.getText(buffer, opt_file));
+};
+
+os.file.mime.register(os.file.mime.text.TYPE, os.file.mime.text.detectText, 1000);
 
 
 /**

@@ -1,12 +1,13 @@
 goog.provide('os.file.mime');
 
+goog.require('goog.Promise');
 goog.require('goog.log');
 goog.require('goog.log.Logger');
 
 /**
  * @typedef {{
  *  type: !string,
- *  detect: !function(ArrayBuffer, os.file.File, *=):*,
+ *  detect: !function(ArrayBuffer, os.file.File, *=):!goog.Promise<*|undefined>,
  *  priority: number,
  *  children: (os.file.mime.Node|undefined)
  * }}
@@ -29,7 +30,9 @@ os.file.mime.LOGGER_ = goog.log.getLogger('os.file.mime');
  */
 os.file.mime.root_ = {
   type: 'application/octet-stream',
-  detect: goog.functions.TRUE,
+  detect: function() {
+    return goog.Promise.resolve(true);
+  },
   priority: 0
 };
 
@@ -114,24 +117,43 @@ os.file.mime.find_ = function(type, opt_node) {
  * @param {!os.file.File} file The file wrapper
  * @param {os.file.mime.Node=} opt_node The current mime node
  * @param {*=} opt_context The current context from the parent node
- * @return {string|undefined} The mime type detected from the buffer/file
+ * @return {!goog.Promise<string|undefined>} A promise resolving to the mime type detected from the buffer/file
  */
 os.file.mime.detect = function(buffer, file, opt_node, opt_context) {
   opt_node = opt_node || os.file.mime.root_;
+  var promise = opt_node.detect(buffer, file, opt_context);
+  if (!(promise instanceof goog.Promise)) {
+    console.warn(opt_node.type, 'is not using a promise');
+  }
+  return promise.then(function(val) {
+    if (val) {
+      opt_context = val;
 
-  var val = opt_node.detect(buffer, file, opt_context);
-  if (val) {
-    opt_context = val;
-
-    if (opt_node.children) {
-      for (var i = 0, ii = opt_node.children.length; i < ii; i++) {
-        var retVal = os.file.mime.detect(buffer, file, opt_node.children[i], opt_context);
-        if (retVal) {
-          return retVal;
-        }
+      if (opt_node.children) {
+        return opt_node.children.reduce(
+            /**
+             * @param {goog.Promise<string|undefined>|string|undefined} c
+             * @param {os.file.mime.Node} n
+             * @return {goog.Promise<string|undefined>|string|undefined}
+             */
+            function(c, n) {
+              // This is setting up a sequential promise chain: e.g.
+              //  initPromise
+              //    .then(promise2)
+              //    .then(promise3)
+              //    ...
+              //
+              // Except that we actually want the promise chain to stop executing once
+              // the first one returns a value.
+              return c.then(function(val) {
+                return val ? val : os.file.mime.detect(buffer, file, n, opt_context);
+              });
+            }, goog.Promise.resolve()).then(function(val) {
+              return val ? val : opt_node.type;
+            });
       }
-    } else {
+
       return opt_node.type;
     }
-  }
+  });
 };

@@ -1,5 +1,6 @@
 goog.provide('os.file.mime.xml');
 
+goog.require('goog.Promise');
 goog.require('os.file.mime');
 goog.require('os.file.mime.text');
 
@@ -25,7 +26,7 @@ os.file.mime.xml.Types = {
  * @param {ArrayBuffer} buffer
  * @param {os.file.File=} opt_file
  * @param {*=} opt_context
- * @return {{content: string, rootNS: string, rootTag: string}|undefined}
+ * @return {!goog.Promise<{content: string, rootNS: string, rootTag: string}|undefined>}
  */
 os.file.mime.xml.isXML = function(buffer, opt_file, opt_context) {
   var retVal;
@@ -118,7 +119,7 @@ os.file.mime.xml.isXML = function(buffer, opt_file, opt_context) {
     }
   }
 
-  return retVal;
+  return goog.Promise.resolve(retVal);
 };
 
 os.file.mime.register(os.file.mime.xml.TYPE, os.file.mime.xml.isXML, 0, os.file.mime.text.TYPE);
@@ -127,7 +128,7 @@ os.file.mime.register(os.file.mime.xml.TYPE, os.file.mime.xml.isXML, 0, os.file.
 /**
  * @param {RegExp} rootTagRegex Regular expression for testing against root tag names
  * @param {RegExp} rootNSRegex Regular express for testing against root tag namespaces
- * @return {!function(ArrayBuffer, os.file.File, *=):*} The detect function for registering with `os.file.mime`
+ * @return {!function(ArrayBuffer, os.file.File, *=):!goog.Promise<*|undefined>} The detect function for registering with `os.file.mime`
  */
 os.file.mime.xml.createDetect = function(rootTagRegex, rootNSRegex) {
   return (
@@ -135,11 +136,14 @@ os.file.mime.xml.createDetect = function(rootTagRegex, rootNSRegex) {
      * @param {ArrayBuffer} buffer
      * @param {os.file.File=} opt_file
      * @param {*=} opt_context
-     * @return {*|undefined}
+     * @return {!goog.Promise<*|undefined>}
      */
     function(buffer, opt_file, opt_context) {
+      var retVal;
       if (opt_context && (rootNSRegex.test(opt_context.rootNS) || rootTagRegex.test(opt_context.rootTag))) {
-        return opt_context;
+        retVal = opt_context;
       }
+
+      return goog.Promise.resolve(retVal);
     });
 };

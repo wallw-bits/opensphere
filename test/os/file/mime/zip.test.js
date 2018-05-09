@@ -18,7 +18,20 @@ describe('os.file.mime.zip', function() {
       '/base/test/resources/zip/test.zip',
       '/base/test/resources/zip/test.kmz'],
         function(buffer) {
-          expect(os.file.mime.zip.isZip(buffer)).toBeTruthy();
+          var result = null;
+          runs(function() {
+            os.file.mime.zip.detectZip(buffer).then(function(val) {
+              result = val;
+            });
+          });
+
+          waitsFor(function() {
+            return !!result;
+          }, 'promise to conclude');
+
+          runs(function() {
+            expect(result).toBeTruthy();
+          });
         });
   });
 

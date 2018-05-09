@@ -8,24 +8,13 @@ describe('os.file.mime.filter', function() {
       '/base/test/resources/xml/namespaced-root-partial.xml',
       '/base/test/resources/xml/comment-with-embedded-xml.xml',
       '/base/test/os/ui/filter/parse/state.xml'],
-        function(buffer) {
-          var result = os.file.mime.detect(buffer);
-          expect(result).not.toBe(os.file.mime.filter.TYPE);
-        });
+        os.file.mime.mock.testNo(os.file.mime.filter.TYPE));
   });
 
   it('should detect files that are filter files', function() {
     os.file.mime.mock.testFiles([
       '/base/test/os/ui/filter/parse/filters.xml'],
-        function(buffer, filename) {
-          var result = os.file.mime.detect(buffer);
-
-          if (!result) {
-            console.log(filename, 'failed!');
-          }
-
-          expect(result).toBe(os.file.mime.filter.TYPE);
-        });
+        os.file.mime.mock.testYes(os.file.mime.filter.TYPE));
   });
 
   it('should register itself with mime detection', function() {

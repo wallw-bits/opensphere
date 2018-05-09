@@ -12,10 +12,7 @@ describe('os.file.mime.json', function() {
       '/base/test/resources/json/ERROR_invalid_value.json',
       '/base/test/resources/json/ERROR_invalid_value2.json',
       '/base/test/resources/json/ERROR_trailing_comma.json'],
-        function(buffer) {
-          var context = os.file.mime.text.getText(buffer);
-          expect(os.file.mime.json.isJSON(buffer, undefined, context)).toBe(undefined);
-        });
+        os.file.mime.mock.testNo(os.file.mime.json.TYPE));
   });
 
   it('should detect files that are json files', function() {
@@ -41,21 +38,32 @@ describe('os.file.mime.json', function() {
         function(buffer, filename) {
           var eVal = expected[filename];
           var context = os.file.mime.text.getText(buffer);
-          var result = os.file.mime.json.isJSON(buffer, undefined, context);
+          var result = null;
+          runs(function() {
+            os.file.mime.json.isJSON(buffer, undefined, context).then(function(val) {
+              result = val;
+            });
+          });
 
-          if (!result) {
-            console.log(filename, 'failed!');
-          }
+          waitsFor(function() {
+            return !!result;
+          }, 'promise to conclude');
 
-          expect(result).toBeTruthy();
-          for (var key in eVal) {
-            expect(result[key]).toEqual(eVal[key]);
-          }
+          runs(function() {
+            if (!result) {
+              console.log(filename, 'failed!');
+            }
+
+            expect(result).toBeTruthy();
+            for (var key in eVal) {
+              expect(result[key]).toEqual(eVal[key]);
+            }
+          });
         });
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain('application/json');
+    var chain = os.file.mime.mock.getTypeChain(os.file.mime.json.TYPE);
     expect(chain).toBe('application/octet-stream, text/plain, application/json');
   });
 });

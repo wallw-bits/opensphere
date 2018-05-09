@@ -1,5 +1,6 @@
 goog.provide('plugin.file.geojson.mime');
 
+goog.require('goog.Promise');
 goog.require('os.file.mime.json');
 
 /**
@@ -13,7 +14,7 @@ plugin.file.geojson.mime.TYPE = 'application/vnd.geo+json';
  * @param {ArrayBuffer} buffer
  * @param {os.file.File=} opt_file
  * @param {*=} opt_context
- * @return {*|undefined}
+ * @return {!goog.Promise<*|undefined>}
  */
 plugin.file.geojson.mime.isGeoJSON = function(buffer, opt_file, opt_context) {
   var retVal;
@@ -22,7 +23,7 @@ plugin.file.geojson.mime.isGeoJSON = function(buffer, opt_file, opt_context) {
     retVal = opt_context;
   }
 
-  return retVal;
+  return goog.Promise.resolve(retVal);
 };
 
 

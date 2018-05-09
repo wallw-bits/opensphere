@@ -1,5 +1,6 @@
 goog.provide('os.file.mime.pdf');
 
+goog.require('goog.Promise');
 goog.require('os.file.mime');
 
 
@@ -18,7 +19,7 @@ os.file.mime.pdf.TYPE = 'application/pdf';
 
 /**
  * @param {ArrayBuffer} buffer
- * @return {boolean}
+ * @return {!goog.Promise<boolean>}
  */
 os.file.mime.pdf.isPDF = function(buffer) {
   if (buffer && buffer.byteLength > 3) {
@@ -26,12 +27,12 @@ os.file.mime.pdf.isPDF = function(buffer) {
     var dv = new DataView(buffer);
     for (var i = 0, n = Math.min(1024, dv.byteLength) - 4; i < n; i++) {
       if (dv.getUint32(i) === os.file.mime.pdf.MAGIC_BYTES_BIG_ENDIAN) {
-        return true;
+        return goog.Promise.resolve(true);
       }
     }
   }
 
-  return false;
+  return goog.Promise.resolve(false);
 };
 
 

@@ -7,17 +7,13 @@ describe('os.file.mime.pdf', function() {
     os.file.mime.mock.testFiles([
       '/base/test/resources/zip/test.zip',
       '/base/test/resources/zip/test.kmz'],
-        function(buffer) {
-          expect(os.file.mime.pdf.isPDF(buffer)).toBeFalsy();
-        });
+        os.file.mime.mock.testNo(os.file.mime.pdf.TYPE));
   });
 
   it('should detect files that are pdf files', function() {
     os.file.mime.mock.testFiles([
       '/base/test/resources/pdf/test.pdf'],
-        function(buffer) {
-          expect(os.file.mime.pdf.isPDF(buffer)).toBeTruthy();
-        });
+        os.file.mime.mock.testYes(os.file.mime.pdf.TYPE));
   });
 
   it('should register itself with mime detection', function() {

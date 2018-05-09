@@ -8,10 +8,7 @@ describe('os.file.mime.xml', function() {
       '/base/test/plugin/file/geojson/10k.json',
       '/base/test/resources/bin/rand.bin',
       '/base/test/resources/xml/ERROR_text-before-root.xml'],
-        function(buffer) {
-          var context = os.file.mime.text.getText(buffer);
-          expect(os.file.mime.xml.isXML(buffer, undefined, context)).toBeFalsy();
-        });
+        os.file.mime.mock.testNo(os.file.mime.xml.TYPE));
   });
 
   it('should detect files that are xml files', function() {
@@ -33,17 +30,25 @@ describe('os.file.mime.xml', function() {
     os.file.mime.mock.testFiles(Object.keys(expected),
         function(buffer, filename) {
           var eVal = expected[filename];
-          var context = os.file.mime.text.getText(buffer);
-          var result = os.file.mime.xml.isXML(buffer, undefined, context);
+          var result = null;
+          runs(function() {
+            os.file.mime.text.detectText(buffer).then(function(context) {
+              return os.file.mime.xml.isXML(buffer, undefined, context);
+            }).then(function(val) {
+              result = val;
+            });
+          });
 
-          if (!result) {
-            console.log(filename, 'failed!');
-          }
+          waitsFor(function() {
+            return !!result;
+          }, 'promise to conclude');
 
-          expect(result).toBeTruthy();
-          for (var key in eVal) {
-            expect(result[key]).toBe(eVal[key]);
-          }
+          runs(function() {
+            expect(result).toBeTruthy();
+            for (var key in eVal) {
+              expect(result[key]).toBe(eVal[key]);
+            }
+          });
         });
   });
 
