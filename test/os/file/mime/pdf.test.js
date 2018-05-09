@@ -21,7 +21,7 @@ describe('os.file.mime.pdf', function() {
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain('application/pdf');
-    expect(chain).toBe('application/octet-stream, application/pdf');
+    var chain = os.file.mime.mock.getTypeChain(os.file.mime.pdf.TYPE);
+    expect(chain).toBe('application/octet-stream, ' + os.file.mime.pdf.TYPE);
   });
 });

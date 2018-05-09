@@ -5,6 +5,13 @@ goog.require('os.file.mime.text');
 
 
 /**
+ * @const
+ * @type {string}
+ */
+os.file.mime.json.TYPE = 'application/json';
+
+
+/**
  * @param {ArrayBuffer} buffer
  * @param {os.file.File=} opt_file
  * @param {*=} opt_context
@@ -32,4 +39,4 @@ os.file.mime.json.isJSON = function(buffer, opt_file, opt_context) {
   return retVal;
 };
 
-os.file.mime.register('application/json', os.file.mime.json.isJSON, 0, 'text/plain');
+os.file.mime.register(os.file.mime.json.TYPE, os.file.mime.json.isJSON, 0, os.file.mime.text.TYPE);

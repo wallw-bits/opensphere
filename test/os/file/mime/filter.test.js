@@ -1,6 +1,6 @@
 goog.require('os.file.File');
-goog.require('os.file.mime.mock');
 goog.require('os.file.mime.filter');
+goog.require('os.file.mime.mock');
 
 describe('os.file.mime.filter', function() {
   it('should not detect files that are not filter files', function() {
@@ -9,9 +9,8 @@ describe('os.file.mime.filter', function() {
       '/base/test/resources/xml/comment-with-embedded-xml.xml',
       '/base/test/os/ui/filter/parse/state.xml'],
         function(buffer) {
-          var context = os.file.mime.text.getText(buffer);
-          context = os.file.mime.xml.isXML(buffer, undefined, context);
-          expect(os.file.mime.filter.isFilter(buffer, undefined, context)).toBeFalsy();
+          var result = os.file.mime.detect(buffer);
+          expect(result).not.toBe(os.file.mime.filter.TYPE);
         });
   });
 
@@ -19,20 +18,18 @@ describe('os.file.mime.filter', function() {
     os.file.mime.mock.testFiles([
       '/base/test/os/ui/filter/parse/filters.xml'],
         function(buffer, filename) {
-          var context = os.file.mime.text.getText(buffer);
-          context = os.file.mime.xml.isXML(buffer, undefined, context);
-          var result = os.file.mime.filter.isFilter(buffer, undefined, context);
+          var result = os.file.mime.detect(buffer);
 
           if (!result) {
             console.log(filename, 'failed!');
           }
 
-          expect(result).toBeTruthy();
+          expect(result).toBe(os.file.mime.filter.TYPE);
         });
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain('text/xml; subtype=FILTER');
+    var chain = os.file.mime.mock.getTypeChain(os.file.mime.filter.TYPE);
     expect(chain).toBe('application/octet-stream, text/plain, text/xml, text/xml; subtype=FILTER');
   });
 });

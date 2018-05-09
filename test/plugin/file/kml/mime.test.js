@@ -8,9 +8,8 @@ describe('plugin.file.kml.mime', function() {
       '/base/test/resources/xml/namespaced-root-partial.xml',
       '/base/test/resources/xml/comment-with-embedded-xml.xml'],
         function(buffer) {
-          var context = os.file.mime.text.getText(buffer);
-          context = os.file.mime.xml.isXML(buffer, undefined, context);
-          expect(plugin.file.kml.mime.isKML(buffer, undefined, context)).toBeFalsy();
+          var result = os.file.mime.detect(buffer);
+          expect(result).not.toBe('application/vnd.google-earth.kml+xml');
         });
   });
 
@@ -18,15 +17,12 @@ describe('plugin.file.kml.mime', function() {
     os.file.mime.mock.testFiles([
       '/base/test/plugin/file/kml/kml_test.xml'],
         function(buffer, filename) {
-          var context = os.file.mime.text.getText(buffer);
-          context = os.file.mime.xml.isXML(buffer, undefined, context);
-          var result = plugin.file.kml.mime.isKML(buffer, undefined, context);
-
+          var result = os.file.mime.detect(buffer);
           if (!result) {
             console.log(filename, 'failed!');
           }
 
-          expect(result).toBeTruthy();
+          expect(result).toBe('application/vnd.google-earth.kml+xml');
         });
   });
 

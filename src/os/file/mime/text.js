@@ -7,6 +7,12 @@ goog.require('os.file.mime');
 
 
 /**
+ * @const
+ * @type {string}
+ */
+os.file.mime.text.TYPE = 'text/plain';
+
+/**
  * The Byte Order Marker (BOM) sequence.
  * @type {!Array<number>}
  * @const
@@ -91,7 +97,7 @@ os.file.mime.text.getText = function(buffer, opt_file) {
     return s;
   }
 };
-os.file.mime.register('text/plain', os.file.mime.text.getText, 1000);
+os.file.mime.register(os.file.mime.text.TYPE, os.file.mime.text.getText, 1000);
 
 
 /**

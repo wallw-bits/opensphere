@@ -9,9 +9,8 @@ describe('os.file.mime.columnmapping', function() {
       '/base/test/resources/xml/comment-with-embedded-xml.xml',
       '/base/test/os/ui/filter/parse/state.xml'],
         function(buffer) {
-          var context = os.file.mime.text.getText(buffer);
-          context = os.file.mime.xml.isXML(buffer, undefined, context);
-          expect(os.file.mime.columnmapping.isColumnMapping(buffer, undefined, context)).toBeFalsy();
+          var result = os.file.mime.detect(buffer);
+          expect(result).not.toBe(os.file.mime.columnmapping.TYPE);
         });
   });
 
@@ -19,20 +18,18 @@ describe('os.file.mime.columnmapping', function() {
     os.file.mime.mock.testFiles([
       '/base/test/os/file/mime/columnmapping.xml'],
         function(buffer, filename) {
-          var context = os.file.mime.text.getText(buffer);
-          context = os.file.mime.xml.isXML(buffer, undefined, context);
-          var result = os.file.mime.columnmapping.isColumnMapping(buffer, undefined, context);
+          var result = os.file.mime.detect(buffer);
 
           if (!result) {
             console.log(filename, 'failed!');
           }
 
-          expect(result).toBeTruthy();
+          expect(result).toBe(os.file.mime.columnmapping.TYPE);
         });
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain('text/xml; subtype=COLUMNMAPPING');
+    var chain = os.file.mime.mock.getTypeChain(os.file.mime.columnmapping.TYPE);
     expect(chain).toBe('application/octet-stream, text/plain, text/xml, text/xml; subtype=COLUMNMAPPING');
   });
 });

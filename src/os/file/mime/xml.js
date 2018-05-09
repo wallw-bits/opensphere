@@ -5,6 +5,13 @@ goog.require('os.file.mime.text');
 
 
 /**
+ * @const
+ * @type {string}
+ */
+os.file.mime.xml.TYPE = 'text/xml';
+
+
+/**
  * @enum {string}
  */
 os.file.mime.xml.Types = {
@@ -114,4 +121,25 @@ os.file.mime.xml.isXML = function(buffer, opt_file, opt_context) {
   return retVal;
 };
 
-os.file.mime.register('text/xml', os.file.mime.xml.isXML, 0, 'text/plain');
+os.file.mime.register(os.file.mime.xml.TYPE, os.file.mime.xml.isXML, 0, os.file.mime.text.TYPE);
+
+
+/**
+ * @param {RegExp} rootTagRegex Regular expression for testing against root tag names
+ * @param {RegExp} rootNSRegex Regular express for testing against root tag namespaces
+ * @return {!function(ArrayBuffer, os.file.File, *=):*} The detect function for registering with `os.file.mime`
+ */
+os.file.mime.xml.createDetect = function(rootTagRegex, rootNSRegex) {
+  return (
+    /**
+     * @param {ArrayBuffer} buffer
+     * @param {os.file.File=} opt_file
+     * @param {*=} opt_context
+     * @return {*|undefined}
+     */
+    function(buffer, opt_file, opt_context) {
+      if (opt_context && (rootNSRegex.test(opt_context.rootNS) || rootTagRegex.test(opt_context.rootTag))) {
+        return opt_context;
+      }
+    });
+};

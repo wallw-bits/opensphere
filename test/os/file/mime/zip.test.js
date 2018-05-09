@@ -23,7 +23,7 @@ describe('os.file.mime.zip', function() {
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain('application/zip');
+    var chain = os.file.mime.mock.getTypeChain(os.file.mime.zip.TYPE);
     expect(chain).toBe('application/octet-stream, application/zip');
   });
 });

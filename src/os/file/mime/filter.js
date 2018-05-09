@@ -3,15 +3,12 @@ goog.provide('os.file.mime.filter');
 goog.require('os.file.mime.xml');
 
 /**
- * @param {ArrayBuffer} buffer
- * @param {os.file.File=} opt_file
- * @param {*=} opt_context
- * @return {boolean|undefined}
+ * @const
+ * @type {string}
  */
-os.file.mime.filter.isFilter = function(buffer, opt_file, opt_context) {
-  if (opt_context && /\/filters\//i.test(opt_context.rootNS) || /^filters/i.test(opt_context.rootTag)) {
-    return opt_context;
-  }
-};
+os.file.mime.filter.TYPE = 'text/xml; subtype=FILTER';
 
-os.file.mime.register('text/xml; subtype=FILTER', os.file.mime.filter.isFilter, 0, 'text/xml');
+os.file.mime.register(
+    os.file.mime.filter.TYPE,
+    os.file.mime.xml.createDetect(/^filters$/i, /\/filters\//i),
+    0, 'text/xml');

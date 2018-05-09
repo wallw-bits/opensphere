@@ -5,6 +5,12 @@ goog.require('os.file.mime');
 
 /**
  * @const
+ * @type {string}
+ */
+os.file.mime.zip.TYPE = 'application/zip';
+
+/**
+ * @const
  * @type {number}
  */
 os.file.mime.zip.MAGIC_BYTES_BIG_ENDIAN = 0x504B0304;
@@ -24,4 +30,4 @@ os.file.mime.zip.isZip = function(buffer) {
 };
 
 
-os.file.mime.register('application/zip', os.file.mime.zip.isZip);
+os.file.mime.register(os.file.mime.zip.TYPE, os.file.mime.zip.isZip);

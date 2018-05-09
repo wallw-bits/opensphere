@@ -9,6 +9,12 @@ goog.require('os.file.mime');
  */
 os.file.mime.pdf.MAGIC_BYTES_BIG_ENDIAN = 0x25504446;
 
+/**
+ * @const
+ * @type {string}
+ */
+os.file.mime.pdf.TYPE = 'application/pdf';
+
 
 /**
  * @param {ArrayBuffer} buffer
@@ -32,4 +38,4 @@ os.file.mime.pdf.isPDF = function(buffer) {
 // We register PDF, not because we do anything with it, but because we do
 // not want to accidentally detect PDF documents as text since they tend
 // to contain a large amount of text content.
-os.file.mime.register('application/pdf', os.file.mime.pdf.isPDF);
+os.file.mime.register(os.file.mime.pdf.TYPE, os.file.mime.pdf.isPDF);
