@@ -47,7 +47,7 @@ describe('os.file.mime.text', function() {
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain('text/plain');
+    var chain = os.file.mime.getTypeChain('text/plain').join(', ');
     expect(chain).toBe('application/octet-stream, text/plain');
   });
 });

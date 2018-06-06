@@ -43,6 +43,11 @@ module.exports = function(config) {
       {pattern: resolver.resolveModulePath('jschardet/dist/jschardet.min.js'), watched: false, included: true, served: true},
       {pattern: resolver.resolveModulePath('oboe/dist/oboe-browser.min.js'), watched: false, included: true, served: true},
       {pattern: resolver.resolveModulePath('lolex/lolex.js', __dirname), watched: false, included: true, served: true},
+      {pattern: resolver.resolveModulePath('zip-js/WebContent/zip.js', __dirname), watched: false, included: true, served: true},
+      {pattern: resolver.resolveModulePath('zip-js/WebContent/zip-ext.js', __dirname), watched: false, included: true, served: true},
+      {pattern: resolver.resolveModulePath('zip-js/WebContent/deflate.js', __dirname), watched: false, included: false, served: true},
+      {pattern: resolver.resolveModulePath('zip-js/WebContent/inflate.js', __dirname), watched: false, included: false, served: true},
+      {pattern: resolver.resolveModulePath('zip-js/WebContent/z-worker.js', __dirname), watched: false, included: false, served: true},
       {pattern: resolver.resolveModulePath('opensphere-state-schema/src/main/**/*.xsd', __dirname), watched: false, included: false, served: true}
     ].concat(closureFiles).concat([
       // init

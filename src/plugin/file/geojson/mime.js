@@ -19,7 +19,7 @@ plugin.file.geojson.mime.TYPE = 'application/vnd.geo+json';
 plugin.file.geojson.mime.isGeoJSON = function(buffer, opt_file, opt_context) {
   var retVal;
 
-  if (opt_context && plugin.file.geojson.mime.find_(opt_context)) {
+  if (opt_context && plugin.file.geojson.mime.find_(/** @type {Object|null} */ (opt_context))) {
     retVal = opt_context;
   }
 

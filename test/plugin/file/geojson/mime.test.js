@@ -18,7 +18,7 @@ describe('os.file.mime.json', function() {
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain(plugin.file.geojson.mime.TYPE);
+    var chain = os.file.mime.getTypeChain(plugin.file.geojson.mime.TYPE).join(', ');
     expect(chain).toBe('application/octet-stream, text/plain, application/json, application/vnd.geo+json');
   });
 });

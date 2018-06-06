@@ -5,10 +5,10 @@ goog.require('goog.log');
 goog.require('goog.log.Logger');
 goog.require('os.config');
 goog.require('os.file.FileManager');
+goog.require('os.file.mime.xmlstate');
 goog.require('os.state');
 goog.require('os.state.Tag');
 goog.require('os.state.XMLStateOptions');
-goog.require('os.state.XMLStateTypeMethod');
 goog.require('os.tag');
 goog.require('os.ui.state.StateManager');
 
@@ -30,10 +30,6 @@ os.ui.state.XMLStateManager = function() {
    * @private
    */
   this.nsUri_ = os.ui.state.XMLStateManager.NS_URI;
-
-  // register the content method
-  var fm = os.file.FileManager.getInstance();
-  fm.registerContentTypeMethod(new os.state.XMLStateTypeMethod());
 };
 goog.inherits(os.ui.state.XMLStateManager, os.ui.state.StateManager);
 

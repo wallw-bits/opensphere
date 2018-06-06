@@ -6,9 +6,9 @@ goog.require('os.file.mime.xml');
  * @const
  * @type {string}
  */
-os.file.mime.columnmapping.TYPE = 'text/xml; subtype=COLUMNMAPPING';
+os.file.mime.columnmapping.TYPE = os.file.mime.xml.TYPE + '; subtype=COLUMNMAPPING';
 
 os.file.mime.register(
     os.file.mime.columnmapping.TYPE,
     os.file.mime.xml.createDetect(/^columnmappings$/i, /\/columnmappings\//i),
-    0, 'text/xml');
+    0, os.file.mime.xml.TYPE);

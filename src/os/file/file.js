@@ -5,7 +5,6 @@ goog.require('goog.async.Deferred');
 goog.require('goog.fs.FileReader');
 goog.require('goog.net.jsloader');
 goog.require('os.IPersistable');
-goog.require('os.arraybuf');
 goog.require('os.defines');
 goog.require('os.file.mime.zip');
 
@@ -116,18 +115,21 @@ os.file.File.prototype.getContent = function() {
  * @param {?(ArrayBuffer|Object|string)} value
  */
 os.file.File.prototype.setContent = function(value) {
+  this.content_ = value;
+};
+
+
+/**
+ * Converts ArrayBuffer content to a string
+ */
+os.file.File.prototype.convertContentToString = function() {
+  var value = this.getContent();
   if (value instanceof ArrayBuffer) {
     var ab = /** @type {ArrayBuffer} */ (value);
-    if (os.arraybuf.isText(ab)) {
-      var s = os.arraybuf.toString(ab);
-      if (s) {
-        this.content_ = s;
-      }
-    } else {
-      this.content_ = ab;
+    var s = os.file.mime.text.getText(ab);
+    if (s) {
+      this.setContent(s);
     }
-  } else {
-    this.content_ = value;
   }
 };
 
@@ -294,18 +296,18 @@ os.file.canImport = function() {
  * Creates a new os.file.File instance from a system file. The content will be read as a string if it's determined
  * to be text, or an ArrayBuffer if not.
  * @param {!File} file The system file
- * @param {boolean=} opt_keepFile Whether to keep reference to the original File on the returned data.
  * @return {!goog.async.Deferred} A promise passing the new file instance to the success callback, or the error message
  *   on failure.
  */
-os.file.createFromFile = function(file, opt_keepFile) {
+os.file.createFromFile = function(file) {
   var deferred = new goog.async.Deferred();
 
-  if (file.size < os.file.File.MAX_CONTENT_LEN) {
+  if (file.path && os.file.FILE_URL_ENABLED) {
+    deferred.callback(os.file.createFromContent(file.name, os.file.getFileUrl(file.path), file, ''));
+  } else if (file.size < os.file.File.MAX_CONTENT_LEN) {
     var url = os.file.getLocalUrl(file.name);
     goog.fs.FileReader.readAsArrayBuffer(file).addCallback(
-        os.file.createFromContent.bind(undefined, file.name, url, opt_keepFile ? file : undefined))
-        .chainDeferred(deferred);
+        os.file.createFromContent.bind(undefined, file.name, url, file)).chainDeferred(deferred);
   } else {
     var limit = Math.floor(os.file.File.MAX_CONTENT_LEN / 1000000) + 'MB';
     var msg = 'File "' + file.name + '" exceeds the size limit (' + limit + ') and cannot be imported.';

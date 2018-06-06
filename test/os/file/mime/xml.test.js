@@ -53,7 +53,7 @@ describe('os.file.mime.xml', function() {
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain('text/xml');
+    var chain = os.file.mime.getTypeChain('text/xml').join(', ');
     expect(chain).toBe('application/octet-stream, text/plain, text/xml');
   });
 });

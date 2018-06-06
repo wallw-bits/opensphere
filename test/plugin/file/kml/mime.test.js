@@ -17,7 +17,12 @@ describe('plugin.file.kml.mime', function() {
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain('application/vnd.google-earth.kml+xml');
+    var chain = os.file.mime.getTypeChain('application/vnd.google-earth.kml+xml').join(', ');
     expect(chain).toBe('application/octet-stream, text/plain, text/xml, application/vnd.google-earth.kml+xml');
+  });
+
+  it('should detect files that are kmz files', function() {
+    os.file.mime.mock.testFiles(['/base/test/resources/zip/test.kmz'],
+        os.file.mime.mock.testYes(plugin.file.kml.mime.KMZ_TYPE), Number.POSITIVE_INFINITY);
   });
 });

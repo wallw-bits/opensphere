@@ -1,7 +1,7 @@
 goog.provide('plugin.im.action.feature.Plugin');
 
 goog.require('goog.events.EventTarget');
-goog.require('os.im.action.FilterActionTypeMethod');
+goog.require('os.file.mime.filteraction');
 goog.require('os.legend');
 goog.require('os.plugin.AbstractPlugin');
 goog.require('os.state.StateManager');
@@ -59,11 +59,8 @@ plugin.im.action.feature.Plugin.prototype.init = function() {
 
   // register import UI
   os.ui.im.ImportManager.getInstance().registerImportUI(
-      os.im.action.ID,
+      os.file.mime.filteraction.TYPE,
       new os.ui.im.action.FilterActionImportUI());
-
-  // register file type detection method
-  os.file.FileManager.getInstance().registerContentTypeMethod(new os.im.action.FilterActionTypeMethod());
 
   // add actions
   plugin.im.action.feature.layerSetup();

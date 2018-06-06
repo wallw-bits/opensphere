@@ -18,7 +18,7 @@ describe('plugin.file.gpx.mime', function() {
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain(plugin.file.gpx.mime.TYPE);
+    var chain = os.file.mime.getTypeChain(plugin.file.gpx.mime.TYPE).join(', ');
     expect(chain).toBe('application/octet-stream, text/plain, text/xml, ' + plugin.file.gpx.mime.TYPE);
   });
 });

@@ -18,7 +18,7 @@ describe('os.file.mime.columnmapping', function() {
   });
 
   it('should register itself with mime detection', function() {
-    var chain = os.file.mime.mock.getTypeChain(os.file.mime.columnmapping.TYPE);
+    var chain = os.file.mime.getTypeChain(os.file.mime.columnmapping.TYPE).join(', ');
     expect(chain).toBe('application/octet-stream, text/plain, text/xml, text/xml; subtype=COLUMNMAPPING');
   });
 });

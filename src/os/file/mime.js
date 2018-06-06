@@ -157,3 +157,30 @@ os.file.mime.detect = function(buffer, file, opt_node, opt_context) {
     }
   });
 };
+
+
+/**
+ * @param {string} type The type whose chain to locate
+ * @param {os.file.mime.Node=} opt_node
+ * @param {Array<!string>=} opt_chain
+ * @return {Array<!string>|undefined} The chain
+ */
+os.file.mime.getTypeChain = function(type, opt_node, opt_chain) {
+  opt_node = opt_node || os.file.mime.root_;
+  opt_chain = opt_chain || [];
+
+  opt_chain.push(opt_node.type);
+
+  if (type === opt_node.type) {
+    return opt_chain;
+  } else if (opt_node.children) {
+    for (var i = 0, n = opt_node.children.length; i < n; i++) {
+      var retVal = os.file.mime.getTypeChain(type, opt_node.children[i], opt_chain);
+      if (retVal) {
+        return retVal;
+      }
+    }
+  }
+
+  opt_chain.pop();
+};

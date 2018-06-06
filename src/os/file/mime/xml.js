@@ -6,6 +6,17 @@ goog.require('os.file.mime.text');
 
 
 /**
+ * @typedef {{
+ *  content: string,
+ *  rootTag: string,
+ *  rootNS: string,
+ *  checkTag: string
+ * }}
+ */
+os.file.mime.xml.Context;
+
+
+/**
  * @const
  * @type {string}
  */
@@ -57,12 +68,12 @@ os.file.mime.xml.isXML = function(buffer, opt_file, opt_context) {
               tag = data.value.substring(colon + 1);
             }
 
-            retVal = {
+            retVal = /** @type {os.file.mime.xml.Context} */ ({
               content: opt_context,
               rootTag: tag,
               rootNS: '',
               checkTag: data.value
-            };
+            });
           }
 
           expectedTypes.push(os.file.mime.xml.Types.ATTRIBUTE_NAME);

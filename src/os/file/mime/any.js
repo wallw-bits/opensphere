@@ -18,7 +18,7 @@ os.file.mime.any.TYPE = '*/*';
  * @return {!goog.Promise<*|undefined>}
  */
 os.file.mime.any.isSomething = function(buffer, opt_file, opt_context) {
-  return goog.Promise.resolve(!!(buffer && buffer.length));
+  return /** @type {!goog.Promise<*|undefined>} */ (goog.Promise.resolve(!!(buffer && buffer.length)));
 };
 
 os.file.mime.register(os.file.mime.any.TYPE, os.file.mime.any.isSomething, 10000);

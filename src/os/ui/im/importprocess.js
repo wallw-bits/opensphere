@@ -40,12 +40,6 @@ os.ui.im.ImportProcess = function(opt_im, opt_fm) {
   this.log = os.ui.im.ImportProcess.LOGGER_;
 
   /**
-   * @type {?string}
-   * @private
-   */
-  this.contentHint_ = null;
-
-  /**
    * @type {os.file.IFileMethod}
    * @private
    */
@@ -143,7 +137,6 @@ os.ui.im.ImportProcess.prototype.setEvent = function(event) {
   this.file = event.file;
   this.fileSupportChecked_ = false;
 
-  this.contentHint_ = event.contentHint;
   this.config_ = event.config;
 
   if (!this.file) {
@@ -199,11 +192,8 @@ os.ui.im.ImportProcess.prototype.methodCleanup_ = function(opt_dispose) {
  * @protected
  */
 os.ui.im.ImportProcess.prototype.processFile = function() {
-  if (this.contentHint_) {
-    var type = this.fm_.getLayerTypeByContentHint(this.file, this.contentHint_);
-    this.onFileType(type);
-  } else {
-    this.fm_.getLayerType(this.file, this.onFileType.bind(this));
+  if (this.file) {
+    this.fm_.getContentType(this.file, this.onFileType.bind(this));
   }
 };
 
