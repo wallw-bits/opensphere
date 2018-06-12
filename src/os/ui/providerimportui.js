@@ -29,6 +29,8 @@ goog.inherits(os.ui.ProviderImportUI, os.ui.im.FileImportUI);
  * @inheritDoc
  */
 os.ui.ProviderImportUI.prototype.launchUI = function(file, opt_config) {
+  os.ui.ProviderImportUI.base(this, 'launchUI', file, opt_config);
+
   var config = new os.parse.FileParserConfig();
 
   // if an existing config was provided, merge it in

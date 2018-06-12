@@ -10,5 +10,5 @@ os.file.mime.columnmapping.TYPE = os.file.mime.xml.TYPE + '; subtype=COLUMNMAPPI
 
 os.file.mime.register(
     os.file.mime.columnmapping.TYPE,
-    os.file.mime.xml.createDetect(/^columnmappings$/i, /\/columnmappings\//i),
+    os.file.mime.xml.createDetect(/^columnmappings$/i, null),
     0, os.file.mime.xml.TYPE);

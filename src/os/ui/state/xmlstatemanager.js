@@ -10,6 +10,8 @@ goog.require('os.state');
 goog.require('os.state.Tag');
 goog.require('os.state.XMLStateOptions');
 goog.require('os.tag');
+goog.require('os.ui.im.ImportManager');
+goog.require('os.ui.state.StateImportUI');
 goog.require('os.ui.state.StateManager');
 
 
@@ -30,6 +32,11 @@ os.ui.state.XMLStateManager = function() {
    * @private
    */
   this.nsUri_ = os.ui.state.XMLStateManager.NS_URI;
+
+  // register the import UI
+  var im = os.ui.im.ImportManager.getInstance();
+  im.registerImportDetails(os.config.getAppName('Application') + ' state files.');
+  im.registerImportUI(os.file.mime.xmlstate.TYPE, new os.ui.state.StateImportUI());
 };
 goog.inherits(os.ui.state.XMLStateManager, os.ui.state.StateManager);
 

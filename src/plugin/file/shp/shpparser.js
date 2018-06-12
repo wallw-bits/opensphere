@@ -563,7 +563,7 @@ plugin.file.shp.SHPParser.prototype.processZIPEntry_ = function(entry, content) 
     content = /** @type {!ArrayBuffer} */ (content);
     if (plugin.file.shp.mime.SHP_EXT_REGEXP.test(entry.filename)) {
       this.setupSHPFile_(content);
-    } else if (plugin.file.shp.mime.DBF_EXT_REGEXP(entry.filename)) {
+    } else if (plugin.file.shp.mime.DBF_EXT_REGEXP.test(entry.filename)) {
       this.setupDBFFile_(content);
       this.updateColumns_();
     }

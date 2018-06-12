@@ -32,6 +32,8 @@ plugin.file.shp.ui.SHPImportUI.prototype.getTitle = function() {
  * @inheritDoc
  */
 plugin.file.shp.ui.SHPImportUI.prototype.launchUI = function(file, opt_config) {
+  plugin.file.shp.ui.SHPImportUI.base(this, 'launchUI', file, opt_config);
+
   var steps = [
     new plugin.file.shp.ui.SHPFilesStep(),
     new os.ui.wiz.step.TimeStep(),

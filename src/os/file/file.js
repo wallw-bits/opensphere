@@ -215,6 +215,24 @@ os.file.File.prototype.setUrl = function(value) {
 
 
 /**
+ * @return {goog.async.Deferred|undefined}
+ */
+os.file.File.prototype.loadContent = function() {
+  var origFile = this.getFile();
+  if (origFile) {
+    var deferred = new goog.async.Deferred();
+    var scope = this;
+    goog.fs.FileReader.readAsArrayBuffer(origFile).addCallback(
+        function(resp) {
+          scope.setContent(resp);
+          return null;
+        }).chainDeferred(deferred);
+    return deferred;
+  }
+};
+
+
+/**
  * @inheritDoc
  */
 os.file.File.prototype.persist = function(opt_to) {
@@ -303,7 +321,7 @@ os.file.createFromFile = function(file) {
   var deferred = new goog.async.Deferred();
 
   if (file.path && os.file.FILE_URL_ENABLED) {
-    deferred.callback(os.file.createFromContent(file.name, os.file.getFileUrl(file.path), file, ''));
+    deferred.callback(os.file.createFromContent(file.name, os.file.getFileUrl(file.path), file, null));
   } else if (file.size < os.file.File.MAX_CONTENT_LEN) {
     var url = os.file.getLocalUrl(file.name);
     goog.fs.FileReader.readAsArrayBuffer(file).addCallback(
@@ -324,7 +342,7 @@ os.file.createFromFile = function(file) {
  * @param {string} fileName The name of the file
  * @param {string} url The URL to the file content
  * @param {File|undefined} originalFile Original file. If included, will be set on the os.file.File
- * @param {!(ArrayBuffer|string)} content The file content
+ * @param {?(ArrayBuffer|string)} content The file content
  * @return {!os.file.File}
  */
 os.file.createFromContent = function(fileName, url, originalFile, content) {

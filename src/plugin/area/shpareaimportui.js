@@ -40,6 +40,8 @@ plugin.area.SHPAreaImportUI.prototype.getTitle = function() {
  * @inheritDoc
  */
 plugin.area.SHPAreaImportUI.prototype.launchUI = function(file, opt_config) {
+  plugin.area.SHPAreaImportUI.base(this, 'launchUI', file, opt_config);
+
   var config = new plugin.file.shp.SHPParserConfig();
 
   var height = '410';

@@ -47,6 +47,8 @@ goog.inherits(plugin.file.shp.ui.ZipSHPImportUI, os.ui.im.FileImportUI);
  * @inheritDoc
  */
 plugin.file.shp.ui.ZipSHPImportUI.prototype.launchUI = function(file, opt_config) {
+  plugin.file.shp.ui.ZipSHPImportUI.base(this, 'launchUI', file, opt_config);
+
   this.shpFile_ = null;
   this.dbfFile_ = null;
   this.zipFile_ = file;

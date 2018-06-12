@@ -138,9 +138,9 @@ os.file.mime.detect = function(buffer, file, opt_node, opt_context) {
              */
             function(c, n) {
               // This is setting up a sequential promise chain: e.g.
-              //  initPromise
-              //    .then(promise2)
-              //    .then(promise3)
+              //  promise1
+              //    .then(x => promise2)
+              //    .then(x => promise3)
               //    ...
               //
               // Except that we actually want the promise chain to stop executing once
