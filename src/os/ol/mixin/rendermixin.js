@@ -57,7 +57,7 @@ ol.render.canvas.PolygonReplay.prototype.drawPolygon = function(polygonGeometry,
  * sucked worse.
  *
  * @param {ol.geom.MultiPolygon} multiPolygonGeometry
- * @param {ol.Feature} feature
+ * @param {ol.Feature|ol.render.Feature} feature
  * @suppress {duplicate|accessControls}
  * @override
  */

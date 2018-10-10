@@ -1640,7 +1640,7 @@ os.geo.isGeometryRectangular = function(geometry) {
 /**
  * Tests if a geometry is polygonal.
  *
- * @param {ol.geom.Geometry|undefined} geometry The geometry to test
+ * @param {ol.geom.Geometry|ol.render.Feature|undefined} geometry The geometry to test
  * @return {boolean} If the feature/geometry is a polygon or multipolygon.
  */
 os.geo.isGeometryPolygonal = function(geometry) {

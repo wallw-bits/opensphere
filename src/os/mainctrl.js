@@ -163,6 +163,7 @@ goog.require('plugin.places.PlacesPlugin');
 goog.require('plugin.position.PositionPlugin');
 goog.require('plugin.suncalc.Plugin');
 goog.require('plugin.track.TrackPlugin');
+goog.require('plugin.vectortile.VectorTilePlugin');
 goog.require('plugin.vectortools.VectorToolsPlugin');
 goog.require('plugin.weather.WeatherPlugin');
 goog.require('plugin.wmts.Plugin');
@@ -537,6 +538,7 @@ os.MainCtrl.prototype.addPlugins = function() {
   os.ui.pluginManager.addPlugin(plugin.suncalc.Plugin.getInstance());
   os.ui.pluginManager.addPlugin(plugin.track.TrackPlugin.getInstance());
   os.ui.pluginManager.addPlugin(plugin.openpage.Plugin.getInstance());
+  os.ui.pluginManager.addPlugin(plugin.vectortile.VectorTilePlugin.getInstance());
 };
 
 

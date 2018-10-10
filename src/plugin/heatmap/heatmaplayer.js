@@ -206,7 +206,7 @@ plugin.heatmap.Heatmap.prototype.onPreCompose_ = function(event) {
 /**
  * Creates the heatmap styles for each feature to draw to the canvas.
  *
- * @param {ol.Feature} feature
+ * @param {ol.Feature|ol.render.Feature} feature
  * @param {number} resolution
  * @return {Array<ol.style.Style>}
  */
@@ -222,7 +222,7 @@ plugin.heatmap.Heatmap.prototype.styleFunc = function(feature, resolution) {
 
   if (!style) {
     // only create the style if it wasn't in the cache
-    var img = this.createImage(feature);
+    var img = this.createImage(/** @type {ol.Feature} */ (feature));
     var icon = new ol.style.Icon({
       opacity: opacity,
       img: img,
