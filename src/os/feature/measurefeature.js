@@ -63,7 +63,12 @@ os.feature.measure.update = function(feature) {
         /**
          * @type {Array<Array<ol.style.Style>>}
          */
-        var styleArrs = [feature.getStyle(), feature.values_['_originalStyle']];
+        var styleArrs = [feature.getStyle()];
+        var origStyle = /** @type {Array<(null|ol.style.Style)>} */ (feature.values_['_originalStyle']);
+        if (origStyle) {
+          styleArrs.push(origStyle);
+        }
+
         for (var j = 0, m = styleArrs.length; j < m; j++) {
           if (i < styleArrs[j].length) {
             var style = styleArrs[j][i];
