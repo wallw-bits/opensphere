@@ -3150,3 +3150,5 @@ exports.welcomeToOpenSphereDialog = {
   STOP_SHOWING_TIPS_BUTTON: '[ng-click=\'ngOnboardCtrl.stopShowing()\']',
   NEXT_BUTTON: '[ng-click=\'ngOnboardCtrl.next()\']'
 };
+
+exports.LOADING_SPINNER = ' .fa-spinner';

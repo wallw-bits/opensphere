@@ -93,8 +93,8 @@ describe('Feature grid', function() {
 
     cy.get(os.layerFeaturesDialog.DESCRIPTION_CELL).should('be.visible');
     cy.get(os.layerFeaturesDialog.DESCRIPTION_CELL).contains('Show');
-    cy.get(os.layerFeaturesDialog.DESCRIPTION_CELL).contains('Show').click();
-    cy.get(os.descriptionInfoDialog.DIALOG, {timeout: 5000}).should('be.visible');
+    cy.get(os.layerFeaturesDialog.DESCRIPTION_CELL).contains('Show').scrollIntoView().click();
+    cy.get(os.descriptionInfoDialog.DIALOG).should('be.visible');
     cy.get(os.descriptionInfoDialog.DIALOG).within(function() {
       // Check description content
       cy.get(os.descriptionInfoDialog.CONTENT).should('be.visible');
@@ -105,9 +105,10 @@ describe('Feature grid', function() {
       });
       cy.get(os.descriptionInfoDialog.CLOSE_BUTTON).click();
     });
-    cy.get(os.descriptionInfoDialog.DIALOG, {timeout: 5000}).should('not.exist');
+    cy.get(os.descriptionInfoDialog.DIALOG).should('not.exist');
 
     // Check selection
+    cy.get(os.layerFeaturesDialog.ROWS_CELLS).first().scrollIntoView();
     cy.get(os.layerFeaturesDialog.ROWS_CELLS).should('be.visible');
     cy.get(os.layerFeaturesDialog.ROWS_CELLS).first().click();
     cy.get(os.layerFeaturesDialog.FULL_FOOTER_STATUS_TEXT).should('contain', '7 records (1 selected)');

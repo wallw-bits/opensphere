@@ -1,21 +1,23 @@
 /// <reference types="Cypress" />
-var os = require('../../support/selectors.js');
+const os = require('../../support/selectors.js');
 
 describe('Import state file', function() {
   before('Login', function() {
     cy.login();
 
     cy.server();
+
     cy.route('**/OpenData/MapServer/export*', 'fx:/smoke-tests/load-state-file-arcgis/export.stub.png')
         .as('getPNG');
-    cy.route('**/OpenData/MapServer/3?f=json', 'fx:/smoke-tests/load-state-file-arcgis/3f=json.stub.json')
-        .as('getLayerDetails-3');
-    cy.route('**/OpenData/MapServer/234?f=json', 'fx:/smoke-tests/load-state-file-arcgis/234f=json.stub.json')
-        .as('getLayerDetails-234');
-    cy.route('POST', '**/OpenData/MapServer/3/query', 'fx:/smoke-tests/load-state-file-arcgis/query-3-1.stub.json')
-        .as('getFeatureList-3_first');
-    cy.route('POST', '**/OpenData/MapServer/234/query', 'fx:/smoke-tests/load-state-file-arcgis/query-234-1.stub.json')
-        .as('getFeatureList-234_first');
+
+    [3, 234].forEach((id) => {
+      cy.route('**/OpenData/MapServer/' + id + '?f=json',
+          'fx:/smoke-tests/load-state-file-arcgis/' + id + 'f=json.stub.json').as('getLayerDetails-' + id);
+      cy.route('**/OpenData/MapServer/' + id + '/query**returnIdsOnly=**',
+          'fx:/smoke-tests/load-state-file-arcgis/query-' + id + '-1.stub.json').as('getFeatureList-' + id + '_ids');
+      cy.route('**/OpenData/MapServer/' + id + '/query**objectIds=**',
+          'fx:/smoke-tests/load-state-file-arcgis/query-' + id + '-2.stub.json').as('getFeatureDetails-' + id + '_obj');
+    });
   });
 
   it('Load data from state file', function() {
@@ -42,11 +44,16 @@ describe('Import state file', function() {
     cy.get(os.importStateDialog.DIALOG).should('be.visible');
     cy.get(os.importStateDialog.CLEAR_CHECKBOX).check();
     cy.get(os.importStateDialog.OK_BUTTON).click();
-    cy.wait(1400);
-    cy.route('POST', '**/OpenData/MapServer/3/query', 'fx:/smoke-tests/load-state-file-arcgis/query-3-2.stub.json')
-        .as('getFeatureDetails-13_second');
-    cy.route('POST', '**/OpenData/MapServer/234/query', 'fx:/smoke-tests/load-state-file-arcgis/query-234-2.stub.json')
-        .as('getFeatureDetails-234_second');
+
+    // wait for the object expansion request to load
+    cy.wait(['@getFeatureDetails-3_obj', '@getFeatureDetails-234_obj']);
+
+    // now wait for parsing to complete
+    cy.get(os.layersDialog.Tabs.Layers.Tree.LAYER_4).should('be.visible');
+    cy.get(os.layersDialog.Tabs.Layers.Tree.LAYER_5).should('be.visible');
+    cy.get(os.layersDialog.Tabs.Layers.Tree.LAYER_4 + os.LOADING_SPINNER).should('not.be.visible');
+    cy.get(os.layersDialog.Tabs.Layers.Tree.LAYER_5 + os.LOADING_SPINNER).should('not.be.visible');
+
     cy.get(os.Toolbar.Date.INPUT).should('have.value', '2019-01-07');
     cy.get(os.Map.MAP_MODE_BUTTON).should('contain', '2D');
     cy.get(os.Application.PAGE).trigger('mouseenter').trigger('mousemove');
@@ -59,8 +66,8 @@ describe('Import state file', function() {
     cy.get(os.layersDialog.Tabs.Layers.Tree.Type.mapLayer.WORLD_IMAGERY_TILES)
         .find(os.layersDialog.Tabs.Layers.Tree.LAYER_TOGGLE_CHECKBOX_WILDCARD)
         .click();
-    cy.wait(1000);
     cy.imageComparison('features loaded');
+
     cy.get(os.layersDialog.Tabs.Layers.Tree.LAYER_5).rightClick();
     cy.get(os.layersDialog.Tabs.Layers.Tree.Type.featureLayer.Server.contextMenu.menuOptions.FEATURE_ACTIONS).click();
     cy.get(os.featureActionsDialog.DIALOG).should('be.visible');
