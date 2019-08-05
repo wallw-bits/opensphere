@@ -4,7 +4,7 @@ goog.require('ol.geom.Polygon');
 goog.require('os.geo.jsts');
 goog.require('os.proj');
 
-describe('os.geo.jsts', function() {
+ddescribe('os.geo.jsts', function() {
   it('should split polygons properly', function() {
     var polygon = new ol.geom.Polygon.fromExtent([-2, -2, 2, 2]);
     var line = new ol.geom.LineString([[0, -4], [0, 4]]);
@@ -60,9 +60,6 @@ describe('os.geo.jsts', function() {
   });
 
   it('should split north polar polygons properly', function() {
-    proj4.defs('EPSG:3413',
-        '+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs');
-
     var polygon = new ol.geom.Polygon([[
       [0, 85],
       [90, 85],
@@ -84,9 +81,6 @@ describe('os.geo.jsts', function() {
   });
 
   it('should split south polar polygons properly', function() {
-    proj4.defs('EPSG:3031',
-        '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs');
-
     var polygon = new ol.geom.Polygon([[
       [0, -85],
       [90, -85],
@@ -105,5 +99,87 @@ describe('os.geo.jsts', function() {
     polys.forEach(function(poly) {
       expect(os.geo.isClosed(poly.getCoordinates()[0])).toBe(true);
     });
+  });
+
+  it('should split north-only multi polygons properly', function() {
+    var multi = new ol.geom.MultiPolygon([[[
+      [0, 85],
+      [90, 85],
+      [180, 85],
+      [270, 85],
+      [0, 85]
+    ]], [[
+      [0, 80],
+      [5, 80],
+      [5, 84],
+      [0, 84],
+      [0, 80]
+    ]]]);
+
+    var result = os.geo.jsts.splitPolarPolygon(multi);
+    expect(result instanceof ol.geom.MultiPolygon).toBe(true);
+    var polys = result.getPolygons();
+    expect(polys.length).toBe(3);
+
+    expect(polys[0].getExtent()).toEqual([-180, 85, 0, 90]);
+    expect(polys[1].getExtent()).toEqual([0, 85, 180, 90]);
+    expect(polys[2].getExtent()).toEqual([0, 80, 5, 84]);
+  });
+
+  it('should split south-only multi polygons properly', function() {
+    var multi = new ol.geom.MultiPolygon([[[
+      [0, -85],
+      [90, -85],
+      [180, -85],
+      [270, -85],
+      [0, -85]
+    ]], [[
+      [0, -84],
+      [5, -84],
+      [5, -80],
+      [0, -80],
+      [0, -84]
+    ]]]);
+
+    var result = os.geo.jsts.splitPolarPolygon(multi);
+    expect(result instanceof ol.geom.MultiPolygon).toBe(true);
+    var polys = result.getPolygons();
+    expect(polys.length).toBe(3);
+
+    expect(polys[0].getExtent()).toEqual([-180, -90, 0, -85]);
+    expect(polys[1].getExtent()).toEqual([0, -90, 180, -85]);
+    expect(polys[2].getExtent()).toEqual([0, -84, 5, -80]);
+  });
+
+  it('should split north and south multi polygons properly', function() {
+    var multi = new ol.geom.MultiPolygon([[[
+      [0, 85],
+      [90, 85],
+      [180, 85],
+      [270, 85],
+      [0, 85]
+    ]], [[
+      [0, -85],
+      [90, -85],
+      [180, -85],
+      [270, -85],
+      [0, -85]
+    ]]]);
+
+    var result = os.geo.jsts.splitPolarPolygon(multi);
+    expect(result instanceof ol.geom.MultiPolygon).toBe(true);
+    var polys = result.getPolygons();
+    expect(polys.length).toBe(4);
+
+    expect(polys[0].getExtent()).toEqual([-180, 85, 0, 90]);
+    expect(polys[1].getExtent()).toEqual([0, 85, 180, 90]);
+    expect(polys[2].getExtent()).toEqual([-180, -90, 0, -85]);
+    expect(polys[3].getExtent()).toEqual([0, -90, 180, -85]);
+  });
+
+  xit('should split polygons containing a pole and crossing the equator properly', function() {
+  });
+
+  xit('should split polygons containing both poles properly', function() {
   });
 });

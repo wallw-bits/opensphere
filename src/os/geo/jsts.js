@@ -23,6 +23,7 @@ goog.require('ol.geom.Polygon');
 goog.require('ol.proj.Projection');
 goog.require('os.fn');
 goog.require('os.geo');
+goog.require('os.geo.cartesian');
 goog.require('os.geo2');
 goog.require('os.geom.GeometryField');
 goog.require('os.map');
