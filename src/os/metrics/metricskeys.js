@@ -237,10 +237,13 @@ os.metrics.keys.OS = {
 os.metrics.Layer = {
   FORCE_LAYER_COLOR: 'layers.features.forceLayerColor',
   VECTOR_COLOR: 'layers.features.changeVectorColor',
+  VECTOR_FILL_COLOR: 'layers.features.changeVectorFillColor',
   VECTOR_ICON: 'layers.features.changeVectorIcon',
   VECTOR_SHAPE: 'layers.features.changeVectorShape',
   VECTOR_CENTER_SHAPE: 'layers.features.changeVectorCenterShape',
   VECTOR_SIZE: 'layers.features.changeVectorSize',
+  VECTOR_OPACITY: 'layers.features.changeVectorOpacity',
+  VECTOR_FILL_OPACITY: 'layers.features.changeVectorFillOpacity',
   VECTOR_LINE_DASH: 'layers.features.changeVectorLineDash',
   VECTOR_AUTO_REFRESH: 'layers.features.changeVectorAutoRefresh',
   VECTOR_ELLIPSOID: 'layers.features.changeVectorEllipsoid',
@@ -264,8 +267,10 @@ os.metrics.Layer = {
   VECTOR_LOB_BEARING_ERROR_COLUMN: 'layers.features.changeVectorLineOfBearingBearingErrorColumn',
   VECTOR_ROTATION_COLUMN: 'layers.features.changeVectorRotationColumn',
   FEATURE_COLOR: 'layers.features.changeFeatureColor',
+  FEATURE_FILL_COLOR: 'layers.features.changeFeatureFillColor',
   FEATURE_ICON: 'layers.features.changeFeatureIcon',
   FEATURE_OPACITY: 'layers.features.changeFeatureOpacity',
+  FEATURE_FILL_OPACITY: 'layers.features.changeFeatureFillOpacity',
   FEATURE_SIZE: 'layers.features.changeFeatureSize',
   FEATURE_LINE_DASH: 'layers.features.changeFeatureLineDash',
   FEATURE_LABEL_COLOR: 'layers.features.changeFeatureLabelColor',
@@ -327,6 +332,7 @@ os.metrics.FeatureList = {
  * @enum {string}
  */
 os.metrics.Places = {
+  ADD_ANNOTATION: 'places.addAnnotation',
   ADD_FOLDER: 'places.addFolder',
   ADD_PLACE: 'places.addPlace',
   EXPORT: 'places.export',
@@ -338,6 +344,7 @@ os.metrics.Places = {
   EDIT_PLACEMARK: 'places.contextMenu.editPlacemark',
   SAVE_TO: 'places.contextMenu.saveTo',
   EXPORT_CONTEXT: 'places.contextMenu.export',
+  QUICK_ADD_PLACES: 'places.quickAdd',
   REMOVE_PLACE: 'places.removePlace',
   REMOVE_ALL: 'places.removeAll'
 };

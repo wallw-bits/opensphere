@@ -37,7 +37,8 @@ plugin.places.TITLE = 'Saved Places';
 plugin.places.Icon = {
   ANNOTATION: 'fa-comment',
   FOLDER: 'fa-folder',
-  PLACEMARK: 'fa-map-marker'
+  PLACEMARK: 'fa-map-marker',
+  QUICK_ADD: 'fa-bolt'
 };
 
 
@@ -66,8 +67,10 @@ plugin.places.ExportFields = [
   os.style.StyleField.SHOW_LABEL_COLUMNS,
   os.style.StyleField.LABEL_COLOR,
   os.style.StyleField.LABEL_SIZE,
+  os.style.StyleField.FILL_COLOR,
   os.Fields.ALT,
   os.Fields.ALT_UNITS,
+  os.data.RecordField.ALTITUDE_MODE,
   os.Fields.SEMI_MAJOR,
   os.Fields.SEMI_MINOR,
   os.Fields.SEMI_MAJOR_UNITS,
@@ -368,9 +371,23 @@ plugin.places.addPlace = function(options) {
       new os.time.TimeInstant(options.startTime) : undefined;
   feature.set(os.data.RecordField.TIME, time);
 
-  var styleConfig = options.styleConfig || os.object.unsafeClone(os.style.DEFAULT_VECTOR_CONFIG);
+  var styleConfig = os.object.unsafeClone(os.style.DEFAULT_VECTOR_CONFIG);
+
+  if (options.styleConfig) {
+    // merge a provided config onto the default
+    os.style.mergeConfig(options.styleConfig, styleConfig);
+  }
+
   feature.set(os.style.StyleType.FEATURE, [styleConfig]);
   feature.set(os.style.StyleField.SHAPE, options.shape || os.style.ShapeType.POINT);
+
+  if (styleConfig && styleConfig[os.style.StyleField.LABELS]) {
+    os.feature.showLabel(feature);
+    os.ui.FeatureEditCtrl.persistFeatureLabels(feature);
+  } else {
+    os.feature.hideLabel(feature);
+  }
+
   os.style.setFeatureStyle(feature);
 
   return parent ? plugin.file.kml.ui.updatePlacemark({
