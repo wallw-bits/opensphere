@@ -1963,7 +1963,7 @@ plugin.cesium.sync.FeatureConverter.prototype.convert = function(feature, resolu
     for (var i = 0, n = styles.length; i < n; i++) {
       var style = styles[i];
       if (style) {
-        var geometry = style.getGeometryFunction()(feature);
+        var geometry = /** @type {?ol.geom.Geometry} */ (style.getGeometryFunction()(feature));
         if (geometry) {
           if (style.getText()) {
             // style is for a label
