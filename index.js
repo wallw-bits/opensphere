@@ -260,10 +260,16 @@ const sharedResources = [
     scripts: ['oboe-browser.min.js']
   },
   {
+    source: 'vendor/ol-mapbox-style',
+    target: 'vendor/ol-mapbox-style',
+    scripts: ['stylefunction.js']
+  },
+  {
     source: resolver.resolveModulePath('navigator.sendbeacon', __dirname),
     target: 'vendor/sendbeacon',
     scripts: ['sendbeacon.js']
   },
+
   {
     source: 'src/electron',
     target: 'electron',
