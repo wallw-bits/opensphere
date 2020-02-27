@@ -7,11 +7,12 @@ const VectorContext = goog.requireType('plugin.cesium.VectorContext');
 
 /**
  * @interface
+ * @template {!Geometry} GeomType
  */
 class IConverter {
   /**
    * @param {!Feature} feature
-   * @param {!Geometry} geometry
+   * @param {!GeomType} geometry
    * @param {!Style} style
    * @param {!VectorContext} context
    * @return {boolean}
@@ -20,7 +21,7 @@ class IConverter {
 
   /**
    * @param {!Feature} feature
-   * @param {!Geometry} geometry
+   * @param {!GeomType} geometry
    * @param {!Style} style
    * @param {!VectorContext} context
    * @return {!Array<!Cesium.PrimitiveLike>|!Cesium.PrimitiveLike|null|undefined}
@@ -29,7 +30,7 @@ class IConverter {
 
   /**
    * @param {!Feature} feature
-   * @param {!Geometry} geometry
+   * @param {!GeomType} geometry
    * @param {!Style} style
    * @param {!VectorContext} context
    * @param {!Array<!Cesium.PrimitiveLike>|!Cesium.PrimitiveLike} primitive
@@ -39,7 +40,7 @@ class IConverter {
 
   /**
    * @param {!Feature} feature
-   * @param {!Geometry} geometry
+   * @param {!GeomType} geometry
    * @param {!Style} style
    * @param {!VectorContext} context
    * @param {!Array<!Cesium.PrimitiveLike>|!Cesium.PrimitiveLike} primitive

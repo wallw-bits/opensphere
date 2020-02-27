@@ -3,11 +3,13 @@ goog.module('plugin.cesium.sync.BaseConverter');
 const {getPrimitive, deletePrimitive} = goog.require('plugin.cesium.primitive');
 
 const IConverter = goog.requireType('plugin.cesium.sync.IConverter');
+const Geometry = goog.requireType('ol.geom.Geometry');
 
 
 /**
  * @abstract
- * @implements {IConverter}
+ * @implements {IConverter<GeomType>}
+ * @template {!Geometry} GeomType
  */
 class BaseConverter {}
 

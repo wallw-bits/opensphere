@@ -1,7 +1,7 @@
 goog.module('plugin.cesium.sync.MultiPolygonConverter');
 
 const {createAndAddPolygon} = goog.require('plugin.cesium.sync.polygon');
-const PolygonConverter = goog.require('plugin.cesium.sync.PolygonConverter');
+const StrokeConverter = goog.require('plugin.cesium.sync.StrokeConverter');
 
 const Feature = goog.requireType('ol.Feature');
 const MultiPolygon = goog.requireType('ol.geom.MultiPolygon');
@@ -11,26 +11,14 @@ const VectorContext = goog.requireType('plugin.cesium.VectorContext');
 
 /**
  * Converter for MultiPolygons
+ * @extends {StrokeConverter<MultiPolygon>}
  */
-class MultiPolygonConverter extends PolygonConverter {
+class MultiPolygonConverter extends StrokeConverter {
   /**
    * @inheritDoc
    */
   create(feature, geometry, style, context) {
     createMultiPolygon(feature, geometry, style, context);
-    return true;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  update(feature, geometry, style, context, primitive) {
-    for (let i = 0, n = primitive.length; i < n; i++) {
-      if (!super.update(feature, geometry, style, context, primitive[i])) {
-        return false;
-      }
-    }
-
     return true;
   }
 }

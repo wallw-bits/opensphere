@@ -12,6 +12,7 @@ const VectorContext = goog.requireType('plugin.cesium.VectorContext');
 
 /**
  * Converter for DynamicFeature instances with MultiLineStrings
+ * @extends {BaseConverter<MultiLineString>}
  */
 class MultiDynamicLineStringConverter extends BaseConverter {
   /**

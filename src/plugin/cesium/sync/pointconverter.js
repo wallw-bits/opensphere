@@ -3,12 +3,12 @@ goog.module('plugin.cesium.sync.PointConverter');
 const {createBillboard, updateBillboard} = goog.require('plugin.cesium.sync.point');
 const BaseConverter = goog.require('plugin.cesium.sync.BaseConverter');
 
-const MultiPoint = goog.requireType('ol.geom.MultiPoint');
 const Point = goog.requireType('ol.geom.Point');
 
 
 /**
  * Converter for Points
+ * @extends {BaseConverter<Point>}
  */
 class PointConverter extends BaseConverter {
   /**

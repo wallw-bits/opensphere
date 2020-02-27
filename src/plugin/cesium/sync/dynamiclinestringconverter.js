@@ -4,8 +4,11 @@ const BaseConverter = goog.require('plugin.cesium.sync.BaseConverter');
 const {shouldUpdatePrimitive} = goog.require('plugin.cesium.primitive');
 const {createPolyline, updatePolyline} = goog.require('plugin.cesium.sync.DynamicLineString');
 
+const LineString = goog.requireType('ol.geom.LineString');
+
 /**
  * Converter for DynamicFeature lines
+ * @extends {BaseConverter<LineString>}
  */
 class DynamicLineStringConverter extends BaseConverter {
   /**

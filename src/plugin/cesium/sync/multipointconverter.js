@@ -11,6 +11,7 @@ const VectorContext = goog.requireType('plugin.cesium.VectorContext');
 
 /**
  * Converter for MultiPoints
+ * @extends {BaseConverter<MultiPoint>}
  */
 class MultiPointConverter extends BaseConverter {
   /**

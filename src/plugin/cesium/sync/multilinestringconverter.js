@@ -13,6 +13,7 @@ const VectorContext = goog.requireType('plugin.cesium.VectorContext');
 
 /**
  * Converter for MultiLineStrings
+ * @extends {BaseConverter<MultiLineString>}
  */
 class MultiLineStringConverter extends BaseConverter {
   /**
